@@ -22,5 +22,5 @@ Documentação dos frameworks:
 4. Uma das formas de pesquisar o CEP é pela página ```http://localhost:1880/cep-form```.
 ![image](https://github.com/user-attachments/assets/136d68a1-3865-456c-ad49-67664c7ac07a)
 
-5. A outra forma é pesquisando diretamente pela rota, por exemplo: ```http://localhost:1880/cep/89010025```
+5. A outra forma de pesquisar o CEP/Zip Code é pesquisando diretamente pela rota, por exemplo: ```http://localhost:1880/cep/89010025```
 ![image](https://github.com/user-attachments/assets/ee3395a6-156d-4064-bbcb-52e5a651b2e5)
