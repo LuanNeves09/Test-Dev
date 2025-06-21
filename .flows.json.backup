@@ -1,0 +1,886 @@
+[
+    {
+        "id": "a1b2c3d4e5f6g7h8i9j0",
+        "type": "tab",
+        "label": "BrazilAPI Integrations",
+        "disabled": false,
+        "info": "Fluxos para integrar com a BrazilAPI para corretoras e CEPs."
+    },
+    {
+        "id": "e7820085f6a5a3c4",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "83e0055d1fa3892b",
+        "type": "tab",
+        "label": "BrazilAPI Integrations",
+        "disabled": false,
+        "info": "Fluxos para integrar com a BrazilAPI para corretoras e CEPs."
+    },
+    {
+        "id": "o1p2q3r4s5t6u7v8w9x0",
+        "type": "http request",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Call BrazilAPI - Brokers",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://brasilapi.com.br/api/cvm/corretoras/v1",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 390,
+        "y": 240,
+        "wires": [
+            [
+                "y1z2a3b4c5d6e6f7g8h9"
+            ]
+        ]
+    },
+    {
+        "id": "y1z2a3b4c5d6e6f7g8h9",
+        "type": "function",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Format Broker List",
+        "func": "if (msg.payload && Array.isArray(msg.payload)) {\n    let brokerListHtml = '<ul class=\"list-disc pl-5 space-y-2\">';\n    msg.payload.forEach(broker => \n    {       \n    const nome_comercial = broker.nome_comercial;\n    const municipio = broker.municipio;\n    const cnpj = broker.cnpj;\n\n    brokerListHtml += `<li class=\"text-gray-700\">${nome_comercial} - ${municipio} / ${cnpj}</li>`;\n    });\n    brokerListHtml += '</ul>';\n    msg.payload = brokerListHtml;\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 240,
+        "wires": [
+            [
+                "f1g2h3i4j5k6l7m8n9o0"
+            ]
+        ]
+    },
+    {
+        "id": "f1g2h3i4j5k6l7m8n9o0",
+        "type": "template",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Broker List HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Dev Test - Avaliable Brokers</title>\n    <script src=\"https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4\"></script> <!-- link pra executar o framework css que usei --->\n    <style>\n        body \n        {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-sky-30 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6 text-center\">Avaliable Brokers - BrazilAPI</h1>\n        <div class=\"p-4 bg-violet-50 rounded-lg border border-blue-200\">\n            {{{payload}}}\n        </div>\n        <p class=\"text-sm text-gray-500 mt-6 text-center\">Dados fornecidos pela BrasilAPI</p>\n    </div>\n</body>\n</html>",
+        "output": "str",
+        "x": 830,
+        "y": 240,
+        "wires": [
+            [
+                "u1v2w3x4y5z6a7b8c9d0"
+            ]
+        ]
+    },
+    {
+        "id": "u1v2w3x4y5z6a7b8c9d0",
+        "type": "http response",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Send Response",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1020,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "q1r2s3t4u5v6w7x8y9z0",
+        "type": "http in",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "CEP Form Page",
+        "url": "/cep-form",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "c1d2e3f4g5h6i7j8k9l0"
+            ]
+        ]
+    },
+    {
+        "id": "c1d2e3f4g5h6i7j8k9l0",
+        "type": "template",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "CEP Input Form HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Search Zip Code - Form</title>\n    <script src=\"https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4\"></script> <!-- link pra executar o framework css que usei --->\n    <style>\n        body \n        {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-xl text-center\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-8 text-center\">Search Zip Code</h1>\n\n        <form action=\"/cep-result\" method=\"GET\" class=\"space-y-6\">\n            <div class=\"flex flex-col\">\n                <label for=\"cepInput\" class=\"text-lg font-medium text-gray-700 mb-2\">Type the Zip Code (only numbers):</label>\n                <input\n                    type=\"text\"\n                    id=\"cepInput\"\n                    name=\"cep\"\n                    placeholder=\"Ex: 01001000\"\n                    pattern=\"[0-9]{8}\"\n                    maxlength=\"8\"\n                    required\n                    class=\"p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-lg\"\n                >\n            </div>\n            <button\n            type=\"submit\"\n            class=\"w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\"\n            >\n                Search Zip Code</button>\n        </form>\n\n        <p class=\"text-sm text-gray-500 mt-8 text-center\">\n        <p class=\"text-sm text-gray-500 mt-4\">To serach zip code by route, use: <code class=\"bg-gray-200 p-1 rounded-md text-sm\">http://localhost:1880/cep/xxx</code></p>\n        <p class=\"text-sm text-gray-500 mt-8\">Developed by Luan Neves - Using Node-RED & BrasilAPI.</p>\n    </div>\n</body>\n</html>",
+        "output": "str",
+        "x": 350,
+        "y": 400,
+        "wires": [
+            [
+                "m1n2o3p4q5r6s7t8u9v0"
+            ]
+        ]
+    },
+    {
+        "id": "m1n2o3p4q5r6s7t8u9v0",
+        "type": "http response",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Send Form Page",
+        "statusCode": "200",
+        "headers": {},
+        "x": 580,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "x1y2z3a4b5c6d7e8f9g0",
+        "type": "http in",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "CEP Result Request",
+        "url": "/cep-result",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 700,
+        "wires": [
+            [
+                "h1i2j3k4l5m6n7o8p9q0"
+            ]
+        ]
+    },
+    {
+        "id": "h1i2j3k4l5m6n7o8p9q0",
+        "type": "function",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Extract CEP from Query",
+        "func": "const zipcode = msg.req.query.cep;\nif (zipcode) {\n    msg.url = `https://brasilapi.com.br/api/cep/v2/${zipcode}`;\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 700,
+        "wires": [
+            [
+                "s1t2u3v4w5x6y7z8a9b0"
+            ]
+        ]
+    },
+    {
+        "id": "s1t2u3v4w5x6y7z8a9b0",
+        "type": "http request",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Call BrazilAPI - CEP V2 for Form",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 640,
+        "y": 700,
+        "wires": [
+            [
+                "d1e2f3g4h5i6j7k8l9m0"
+            ]
+        ]
+    },
+    {
+        "id": "d1e2f3g4h5i6j7k8l9m0",
+        "type": "function",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Format CEP Details for Form",
+        "func": "let cepDetailsHtml = '';\nif (msg.payload && msg.payload.cep) {\n    const data = msg.payload;\n    cepDetailsHtml = `<div class=\"space-y-2\">\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Zip Code:</strong> ${data.cep}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">State:</strong> ${data.state}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">City:</strong> ${data.city}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Neighborhood:</strong> ${data.neighborhood}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Street:</strong> ${data.street}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Service:</strong> ${data.service}</p>\n        </div>`;\n}\nmsg.payload = cepDetailsHtml;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 700,
+        "wires": [
+            [
+                "j1k2l3m4n5o6p7q8r9s0"
+            ]
+        ]
+    },
+    {
+        "id": "j1k2l3m4n5o6p7q8r9s0",
+        "type": "template",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "CEP Result HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title> Zip Code - Result</title>\n    <script src=\"https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4\"></script> <!-- link pra executar o framework css que usei --->\n    <style>\n        body \n        {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6 text-center\">Zip Code Details - BrasilAPI</h1>\n        <div class=\"p-6 bg-green-50 rounded-lg border border-green-200 mb-6\">\n            <h2 class=\"text-2xl font-semibold text-green-800 mb-4\">Search result:</h2>\n            {{{payload}}}\n        </div>\n        <div class=\"text-center\">\n            <a href=\"/cep-form\" class=\"inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                &larr; New Zip Code Search \n            </a>\n        </div>\n        <p class=\"items-center text-sm text-gray-500 mt-4\">To serach zip code by route, use: <code class=\"bg-gray-200 p-1 rounded-md text-sm\">http://localhost:1880/cep/xxx</code></p>\n        <p class=\"items-center text-sm text-gray-500 mt-8\">Developed by Luan Neves - Using Node-RED & BrasilAPI.</p>\n    </div>\n</body>\n</html>\n",
+        "output": "str",
+        "x": 130,
+        "y": 760,
+        "wires": [
+            [
+                "v1w2x3y4z5a6b7c8d9e0"
+            ]
+        ]
+    },
+    {
+        "id": "v1w2x3y4z5a6b7c8d9e0",
+        "type": "http response",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Send Response",
+        "statusCode": "200",
+        "headers": {},
+        "x": 320,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "a0b1c2d3e4f5g6h7i8j9",
+        "type": "template",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Welcome Page",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Home</title>\n    <script src=\"https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4\"></script> <!-- link pra executar o framework css que usei --->\n    <style>\n        body \n        {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-xl text-center\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6\">Welcome to BrasilAPI Aplication!</h1>\n        <p class=\"text-lg text-gray-600 mb-8\">Select the option to go to the page</p>\n\n        <div class=\"space-y-4\">\n            <a href=\"/brokers\" class=\"inline-block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                View Avaliable Brokers \n            </a>\n            <a href=\"/cep-form\" class=\"inline-block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                Search Zip-Code (Form)\n            </a>\n            <p class=\"text-sm text-gray-500 mt-4\">To serach zip code by route, use: <code class=\"bg-gray-200 p-1 rounded-md text-sm\">http://localhost:1880/cep/xxx</code></p>\n        </div>\n\n        <p class=\"text-sm text-gray-500 mt-8\">Developed by Luan Neves - Using Node-RED & BrasilAPI.</p>\n    </div>\n</body>\n</html>",
+        "output": "str",
+        "x": 310,
+        "y": 80,
+        "wires": [
+            [
+                "k0l1m2n3o4p5q6r7s8t9"
+            ]
+        ],
+        "icon": "font-awesome/fa-home"
+    },
+    {
+        "id": "k0l1m2n3o4p5q6r7s8t9",
+        "type": "http response",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Send Welcome Page",
+        "statusCode": "200",
+        "headers": {},
+        "x": 570,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "50abe8d2b982d083",
+        "type": "http in",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Welcome",
+        "url": "/welcome",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 80,
+        "wires": [
+            [
+                "a0b1c2d3e4f5g6h7i8j9"
+            ]
+        ]
+    },
+    {
+        "id": "f197b2caf0413acf",
+        "type": "comment",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Welcome Page:",
+        "info": "",
+        "x": 130,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "e1f2g3h4i5j6k7l8m9n0",
+        "type": "http in",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Get Brokers Request",
+        "url": "/brokers",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "o1p2q3r4s5t6u7v8w9x0"
+            ]
+        ]
+    },
+    {
+        "id": "23927a8408dcf901",
+        "type": "comment",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Brokers Page:",
+        "info": "",
+        "x": 120,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "510fb59ab6d308fd",
+        "type": "comment",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Input CEP Page:",
+        "info": "",
+        "x": 130,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e49f3d97ead2b44b",
+        "type": "comment",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Result CEP Page:",
+        "info": "",
+        "x": 130,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "3aa1a11af9dde2d1",
+        "type": "http request",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Call BrazilAPI - CEP V2",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": true,
+        "headers": [],
+        "x": 730,
+        "y": 480,
+        "wires": [
+            [
+                "d1e2f3g4h5i6j7k8l9m0"
+            ]
+        ]
+    },
+    {
+        "id": "0924d0c59df10a75",
+        "type": "function",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "Prepare CEP Request (Route)",
+        "func": "const zipcode = msg.req.params.zipcode;\nif (!zipcode || zipcode.length !== 8) \n{\n    throw new Error(\"Invalid zip code provided in route. Use 8 numeric digits. For example: /cep/12345678\");\n}\nmsg.url = `https://brasilapi.com.br/api/cep/v2/${zipcode}`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 480,
+        "wires": [
+            [
+                "3aa1a11af9dde2d1"
+            ]
+        ]
+    },
+    {
+        "id": "15190efe8d80078e",
+        "type": "http in",
+        "z": "a1b2c3d4e5f6g7h8i9j0",
+        "name": "CEP Route Parameter",
+        "url": "/cep/:zipcode",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "0924d0c59df10a75"
+            ]
+        ]
+    },
+    {
+        "id": "fdfd20798e538007",
+        "type": "http in",
+        "z": "83e0055d1fa3892b",
+        "name": "Get Brokers Request",
+        "url": "/brokers",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "cc945f14a3e024d1"
+            ]
+        ]
+    },
+    {
+        "id": "cc945f14a3e024d1",
+        "type": "http request",
+        "z": "83e0055d1fa3892b",
+        "name": "Call BrazilAPI - Brokers",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://brasilapi.com.br/api/corretoras/v1",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": true,
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "5e73ed47bab3994a"
+            ]
+        ]
+    },
+    {
+        "id": "5e73ed47bab3994a",
+        "type": "function",
+        "z": "83e0055d1fa3892b",
+        "name": "Format Broker List",
+        "func": "if (msg.payload && Array.isArray(msg.payload)) {\n    let brokerListHtml = '<ul class=\"list-disc pl-5 space-y-2\">';\n    msg.payload.forEach(broker => {\n        const name = broker.nome_comercial || broker.nome || 'N/A';\n        const city = broker.municipio || 'N/A';\n        const cnpj = broker.cnpj ? `${broker.cnpj.substring(0, 2)}.${broker.cnpj.substring(2, 5)}.${broker.cnpj.substring(5, 8)}/${broker.cnpj.substring(8, 12)}-${broker.cnpj.substring(12, 14)}` : 'N/A';\n        brokerListHtml += `<li class=\"text-gray-700\">${name} - ${city} / ${cnpj}</li>`;\n    });\n    brokerListHtml += '</ul>';\n    msg.payload = brokerListHtml;\n} else {\n    msg.error = { message: 'Nenhuma corretora encontrada ou formato de dados inesperado da API.', status: msg.statusCode || 500 };\n    throw new Error(msg.error.message); \n}\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 100,
+        "wires": [
+            [
+                "554475cda878c6a8"
+            ]
+        ]
+    },
+    {
+        "id": "554475cda878c6a8",
+        "type": "template",
+        "z": "83e0055d1fa3892b",
+        "name": "Broker List HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Catálogo de Corretoras</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6 text-center\">Catálogo de Corretoras - BrazilAPI</h1>\n        <div class=\"p-4 bg-blue-50 rounded-lg border border-blue-200\">\n            <h2 class=\"text-2xl font-semibold text-blue-800 mb-4\">Corretoras Disponíveis:</h2>\n            {{{payload}}}\n        </div>\n        <p class=\"text-sm text-gray-500 mt-6 text-center\">Dados fornecidos pela BrazilAPI.</p>\n        <div class=\"text-center mt-6\">\n            <a href=\"/welcome\" class=\"inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                Voltar para o Início\n            </a>\n        </div>\n        <p class=\"text-sm text-gray-500 mt-4 text-center\">Desenvolvido por Luan Neves</p>\n    </div>\n</body>\n</html>\n",
+        "output": "str",
+        "x": 800,
+        "y": 100,
+        "wires": [
+            [
+                "4edc245e324176b0"
+            ]
+        ]
+    },
+    {
+        "id": "4edc245e324176b0",
+        "type": "http response",
+        "z": "83e0055d1fa3892b",
+        "name": "Send Response",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1000,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "0579e82766a24654",
+        "type": "http in",
+        "z": "83e0055d1fa3892b",
+        "name": "CEP Route Parameter",
+        "url": "/cep/:zipcode",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "05bfa08cdd56a8d3"
+            ]
+        ]
+    },
+    {
+        "id": "05bfa08cdd56a8d3",
+        "type": "function",
+        "z": "83e0055d1fa3892b",
+        "name": "Prepare CEP Request (Route)",
+        "func": "const zipcode = msg.req.params.zipcode;\nif (!zipcode || zipcode.length !== 8 || !/^[0-9]+$/.test(zipcode)) {\n    throw new Error(\"CEP inválido fornecido na rota. Use 8 dígitos numéricos. Exemplo: /cep/12345678\");\n}\nmsg.url = `https://brasilapi.com.br/api/cep/v2/${zipcode}`;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "282a8859c0a4a850"
+            ]
+        ]
+    },
+    {
+        "id": "282a8859c0a4a850",
+        "type": "http request",
+        "z": "83e0055d1fa3892b",
+        "name": "Call BrazilAPI - CEP V2",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": true,
+        "headers": [],
+        "x": 600,
+        "y": 300,
+        "wires": [
+            [
+                "524f1a55b3f92825"
+            ]
+        ]
+    },
+    {
+        "id": "524f1a55b3f92825",
+        "type": "function",
+        "z": "83e0055d1fa3892b",
+        "name": "Format CEP Details (Route)",
+        "func": "let cepDetailsHtml = '';\nif (msg.payload && msg.payload.cep) {\n    const data = msg.payload;\n    const cepFormatted = data.cep ? `${data.cep.substring(0, 5)}-${data.cep.substring(5, 8)}` : 'N/A';\n    cepDetailsHtml = `\n        <div class=\"space-y-2\">\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">CEP:</strong> ${cepFormatted}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Estado:</strong> ${data.state || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Cidade:</strong> ${data.city || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Bairro:</strong> ${data.neighborhood || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Rua:</strong> ${data.street || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Serviço:</strong> ${data.service || 'N/A'}</p>\n        </div>\n    `;\n} else if (msg.payload && msg.payload.message) {\n    msg.error = { message: msg.payload.message, status: msg.statusCode || 404 };\n    throw new Error(msg.error.message);\n} else {\n    msg.error = { message: 'CEP não encontrado ou erro inesperado na resposta da API.', status: msg.statusCode || 500 };\n    throw new Error(msg.error.message);\n}\nmsg.payload = cepDetailsHtml;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 300,
+        "wires": [
+            [
+                "314f9fb695c5c617"
+            ]
+        ]
+    },
+    {
+        "id": "314f9fb695c5c617",
+        "type": "template",
+        "z": "83e0055d1fa3892b",
+        "name": "CEP Details HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Busca de CEP</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6 text-center\">Detalhamento do CEP - BrazilAPI</h1>\n        <div class=\"p-6 bg-green-50 rounded-lg border border-green-200\">\n            <h2 class=\"text-2xl font-semibold text-green-800 mb-4\">Resultados da Busca:</h2>\n            {{{payload}}}\n        </div>\n        <p class=\"text-sm text-gray-500 mt-6 text-center\">Para buscar via rota, use: <code class=\"bg-gray-200 p-1 rounded-md text-sm\">http://localhost:1880/cep/XXXXXXXX</code></p>\n        <div class=\"text-center mt-6\">\n            <a href=\"/welcome\" class=\"inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                Voltar para o Início\n            </a>\n        </div>\n        <p class=\"text-sm text-gray-500 mt-4 text-center\">Desenvolvido por Luan Neves</p>\n    </div>\n</body>\n</html>\n",
+        "output": "str",
+        "x": 1000,
+        "y": 300,
+        "wires": [
+            [
+                "d4068ce22e008ba3"
+            ]
+        ]
+    },
+    {
+        "id": "d4068ce22e008ba3",
+        "type": "http response",
+        "z": "83e0055d1fa3892b",
+        "name": "Send Response",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1200,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "027c963bdd92ac69",
+        "type": "http in",
+        "z": "83e0055d1fa3892b",
+        "name": "CEP Form Page",
+        "url": "/cep-form",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "89520c057dfd326a"
+            ]
+        ]
+    },
+    {
+        "id": "89520c057dfd326a",
+        "type": "template",
+        "z": "83e0055d1fa3892b",
+        "name": "CEP Input Form HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Busca de CEP</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-xl\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-8 text-center\">Buscar CEP</h1>\n\n        <!-- Form de Busca de CEP -->\n        <form action=\"/cep-result\" method=\"GET\" class=\"space-y-6\">\n            <div class=\"flex flex-col\">\n                <label for=\"cepInput\" class=\"text-lg font-medium text-gray-700 mb-2\">Digite o CEP (apenas números):</label>\n                <input\n                    type=\"text\"\n                    id=\"cepInput\"\n                    name=\"cep\"\n                    placeholder=\"Ex: 01001000\"\n                    pattern=\"[0-9]{8}\"\n                    maxlength=\"8\"\n                    required\n                    class=\"p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-lg\"\n                >\n            </div>\n            <button\n                type=\"submit\"\n                class=\"w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\"\n            >\n                Buscar CEP\n            </button>\n        </form>\n\n        <p class=\"text-sm text-gray-500 mt-8 text-center\">\n            Alternativamente, você pode buscar o CEP diretamente via URL (rota):<br>\n            <code class=\"bg-gray-200 p-1 rounded-md text-sm\">http://localhost:1880/cep/XXXXXXXX</code>\n            (substitua XXXXXXXX pelo CEP)\n        </p>\n        <div class=\"text-center mt-6\">\n            <a href=\"/welcome\" class=\"inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                Voltar para o Início\n            </a>\n        </div>\n        <p class=\"text-sm text-gray-500 mt-4 text-center\">Desenvolvido por Luan Neves</p>\n    </div>\n</body>\n</html>\n",
+        "output": "str",
+        "x": 370,
+        "y": 500,
+        "wires": [
+            [
+                "8d5fc45ce211c8ec"
+            ]
+        ]
+    },
+    {
+        "id": "8d5fc45ce211c8ec",
+        "type": "http response",
+        "z": "83e0055d1fa3892b",
+        "name": "Send Form Page",
+        "statusCode": "200",
+        "headers": {},
+        "x": 570,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "923ee2fd2f5accc6",
+        "type": "http in",
+        "z": "83e0055d1fa3892b",
+        "name": "CEP Result Request",
+        "url": "/cep-result",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 600,
+        "wires": [
+            [
+                "636398098fe1d73c"
+            ]
+        ]
+    },
+    {
+        "id": "636398098fe1d73c",
+        "type": "function",
+        "z": "83e0055d1fa3892b",
+        "name": "Extract CEP from Query",
+        "func": "const zipcode = msg.req.query.cep; // Get from GET query parameter\nif (!zipcode || zipcode.length !== 8 || !/^[0-9]+$/.test(zipcode)) {\n    throw new Error(\"CEP inválido fornecido no formulário. Use 8 dígitos numéricos.\");\n}\nmsg.url = `https://brasilapi.com.br/api/cep/v2/${zipcode}`;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 600,
+        "wires": [
+            [
+                "7d2ce496cfa72c66"
+            ]
+        ]
+    },
+    {
+        "id": "7d2ce496cfa72c66",
+        "type": "http request",
+        "z": "83e0055d1fa3892b",
+        "name": "Call BrazilAPI - CEP V2 for Form",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": true,
+        "x": 600,
+        "y": 600,
+        "wires": [
+            [
+                "ece405dc337818f9"
+            ]
+        ]
+    },
+    {
+        "id": "ece405dc337818f9",
+        "type": "function",
+        "z": "83e0055d1fa3892b",
+        "name": "Format CEP Details (Form)",
+        "func": "let cepDetailsHtml = '';\nif (msg.payload && msg.payload.cep) {\n    const data = msg.payload;\n    const cepFormatted = data.cep ? `${data.cep.substring(0, 5)}-${data.cep.substring(5, 8)}` : 'N/A';\n    cepDetailsHtml = `\n        <div class=\"space-y-2\">\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">CEP:</strong> ${cepFormatted}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Estado:</strong> ${data.state || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Cidade:</strong> ${data.city || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Bairro:</strong> ${data.neighborhood || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Rua:</strong> ${data.street || 'N/A'}</p>\n            <p class=\"text-lg text-gray-800\"><strong class=\"font-semibold\">Serviço:</strong> ${data.service || 'N/A'}</p>\n        </div>\n    `;\n} else if (msg.payload && msg.payload.message) {\n    msg.error = { message: msg.payload.message, status: msg.statusCode || 404 };\n    throw new Error(msg.error.message);\n} else {\n    msg.error = { message: 'CEP não encontrado ou erro inesperado na resposta da API.', status: msg.statusCode || 500 };\n    throw new Error(msg.error.message);\n}\nmsg.payload = cepDetailsHtml;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 600,
+        "wires": [
+            [
+                "17792c03afd59133"
+            ]
+        ]
+    },
+    {
+        "id": "17792c03afd59133",
+        "type": "template",
+        "z": "83e0055d1fa3892b",
+        "name": "CEP Result HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Resultado da Busca de CEP</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6 text-center\">Detalhamento do CEP - BrazilAPI</h1>\n        <div class=\"p-6 bg-green-50 rounded-lg border border-green-200 mb-6\">\n            <h2 class=\"text-2xl font-semibold text-green-800 mb-4\">Resultados da Busca:</h2>\n            {{{payload}}}\n        </div>\n        <div class=\"text-center\">\n            <a href=\"/cep-form\" class=\"inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                &larr; Nova Busca de CEP\n            </a>\n            <a href=\"/welcome\" class=\"inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md ml-4\">\n                Voltar para o Início\n            </a>\n        </div>\n        <p class=\"text-sm text-gray-500 mt-4 text-center\">Desenvolvido por Luan Neves</p>\n    </div>\n</body>\n</html>\n",
+        "output": "str",
+        "x": 1000,
+        "y": 600,
+        "wires": [
+            [
+                "49be1432503b3908"
+            ]
+        ]
+    },
+    {
+        "id": "49be1432503b3908",
+        "type": "http response",
+        "z": "83e0055d1fa3892b",
+        "name": "Send Response",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1200,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "87ac623e361c858d",
+        "type": "http in",
+        "z": "83e0055d1fa3892b",
+        "name": "Welcome Page",
+        "url": "/welcome",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 780,
+        "wires": [
+            [
+                "5bb7078b14bc1bed"
+            ]
+        ]
+    },
+    {
+        "id": "5bb7078b14bc1bed",
+        "type": "template",
+        "z": "83e0055d1fa3892b",
+        "name": "Welcome Page HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Bem-vindo à Aplicação BrazilAPI</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Open Sans', sans-serif;\n        }\n    </style>\n</head>\n<body class=\"bg-gray-100 flex items-center justify-center min-h-screen p-4\">\n    <div class=\"bg-white p-8 rounded-lg shadow-xl w-full max-w-xl text-center\">\n        <h1 class=\"text-4xl font-bold text-gray-800 mb-6\">Bem-vindo à Aplicação BrazilAPI</h1>\n        <p class=\"text-lg text-gray-600 mb-8\">Escolha uma das opções abaixo para explorar os dados:</p>\n\n        <div class=\"space-y-4\">\n            <a href=\"/brokers\" class=\"inline-block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                Ver Catálogo de Corretoras\n            </a>\n            <a href=\"/cep-form\" class=\"inline-block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-md\">\n                Buscar CEP (Formulário)\n            </a>\n            <p class=\"text-sm text-gray-500 mt-4\">Para buscar CEP via rota, use: <code class=\"bg-gray-200 p-1 rounded-md text-sm\">http://localhost:1880/cep/XXXXXXXX</code></p>\n        </div>\n\n        <p class=\"text-sm text-gray-500 mt-8\">Aplicação desenvolvida com Node-RED e BrazilAPI.</p>\n        <p class=\"text-sm text-gray-500 mt-4 text-center\">Desenvolvido por Luan Neves</p>\n    </div>\n</body>\n</html>",
+        "output": "str",
+        "x": 370,
+        "y": 780,
+        "wires": [
+            [
+                "397838d81937793c"
+            ]
+        ]
+    },
+    {
+        "id": "397838d81937793c",
+        "type": "http response",
+        "z": "83e0055d1fa3892b",
+        "name": "Send Welcome Page",
+        "statusCode": "200",
+        "headers": {},
+        "x": 570,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "3ea2cda636864ea8",
+        "type": "http in",
+        "z": "83e0055d1fa3892b",
+        "name": "Redirect to Welcome",
+        "url": "/",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 880,
+        "wires": [
+            [
+                "45920fba96eaa811"
+            ]
+        ]
+    },
+    {
+        "id": "45920fba96eaa811",
+        "type": "change",
+        "z": "83e0055d1fa3892b",
+        "name": "Set Redirect Header",
+        "rules": [
+            {
+                "t": "set",
+                "p": "statusCode",
+                "pt": "msg",
+                "to": "302",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\"Location\": \"/welcome\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 880,
+        "wires": [
+            [
+                "8fffeccaa04be729"
+            ]
+        ]
+    },
+    {
+        "id": "8fffeccaa04be729",
+        "type": "http response",
+        "z": "83e0055d1fa3892b",
+        "name": "Send Redirect",
+        "statusCode": "",
+        "headers": {},
+        "x": 570,
+        "y": 880,
+        "wires": []
+    }
+]
