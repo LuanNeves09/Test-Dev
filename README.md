@@ -1,17 +1,19 @@
 # Teste Dev. Jr
 
 ### Informações do projeto
-Este projeto foi desenvolvido com framework **Node-RED** (flow-based programming), e para a estilização foi usado o framework **Tailwind CSS**.
+Este projeto foi desenvolvido com framework **Node-RED** (flow-based programming), dados do site **[brasilAPI](brasilapi.com.br)**, e para a estilização foi usado o framework **Tailwind CSS**.
 
-Documentação de ambos:
+Documentação dos frameworks:
 * Node-RED: [Documentação](https://nodered.org/docs/)
 * Tailwind CSS: [Documentação](https://tailwindcss.com/docs/styling-with-utility-classes)
-
+---
 ### Funcionamento
-1. Ao ser executado, o projeto rodará no ```http://localhost:1880/```.
+###### O projeto deverá ser executado conforme especificado pela documentação oficial [Running Node-RED locally](https://nodered.org/docs/getting-started/local).
+
+1. Ao ser executado, o projeto rodará em ```http://localhost:1880/```.
 ![image](https://github.com/user-attachments/assets/38d736bb-1a14-4755-856a-c3434db28fb3)
 
-2. A página responsável (Principal) por escolher a função que será utilizada é a ```http://localhost:1880/welcome```.
+2. A página responsável (página principal) por escolher a função que será utilizada é a ```http://localhost:1880/welcome```.
 ![image](https://github.com/user-attachments/assets/19928ed9-943e-4c31-9288-bd41549fc3f3)
 
 3. A página reponsável por listar todas as corretoras é a  ```http://localhost:1880/brokers```.
