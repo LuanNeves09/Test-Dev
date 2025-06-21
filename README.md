@@ -7,9 +7,14 @@ Documentação dos frameworks:
 * Node-RED: [Documentação](https://nodered.org/docs/)
 * Tailwind CSS: [Documentação](https://tailwindcss.com/docs/styling-with-utility-classes)
 ---
-### Funcionamento
-###### O projeto deverá ser executado conforme especificado pela documentação oficial [Running Node-RED locally](https://nodered.org/docs/getting-started/local).
+### Execução da aplicação
+O Node-RED deve ser instalado conforme especificado pela documentação oficial [Running Node-RED locally](https://nodered.org/docs/getting-started/local).
+_Passos_:
+1. Abra o Terminal/Windows PowerShell.
+2. Execute o comando ```git clone https://github.com/LuanNeves09/Test-Dev.git```.
+3. Execute o comando ```cd .\Test-Dev\ | node-red```.
 
+### Funcionamento
 1. Ao ser executado, o projeto rodará em ```http://localhost:1880/```.
 ![image](https://github.com/user-attachments/assets/38d736bb-1a14-4755-856a-c3434db28fb3)
 
