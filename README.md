@@ -9,7 +9,7 @@ Documentação dos frameworks:
 ---
 ### Execução da aplicação
 O Node-RED deve ser instalado conforme especificado pela documentação oficial [Running Node-RED locally](https://nodered.org/docs/getting-started/local).
-_Passos_:
+Passos:
 1. Abra o Terminal/Windows PowerShell.
 2. Execute o comando ```git clone https://github.com/LuanNeves09/Test-Dev.git```.
 3. Execute o comando ```cd .\Test-Dev\ | node-red```.
