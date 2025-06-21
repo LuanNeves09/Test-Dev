@@ -1,7 +1,13 @@
 # Teste Dev. Jr
-## Repositório criado para o teste de Dev Jr
 
 ### Informações do projeto
+Este projeto foi desenvolvido com framework **Node-RED** (flow-based programming), e para a estilização foi usado o framework **Tailwind CSS**.
+
+Documentação de ambos:
+* Node-RED: [Documentação](https://nodered.org/docs/)
+* Tailwind CSS: [Documentação](https://tailwindcss.com/docs/styling-with-utility-classes)
+
+### Funcionamento
 1. Ao ser executado, o projeto rodará no ```http://localhost:1880/```.
 ![image](https://github.com/user-attachments/assets/38d736bb-1a14-4755-856a-c3434db28fb3)
 
