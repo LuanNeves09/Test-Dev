@@ -1,7 +1,7 @@
 # Teste Dev. Jr
 
 ### Informações do projeto
-Este projeto foi desenvolvido com framework **Node-RED** (flow-based programming), dados do site **[brasilAPI](brasilapi.com.br)**, e para a estilização foi usado o framework **Tailwind CSS**.
+Este projeto foi desenvolvido com framework **Node-RED** (flow-based programming), dados do site **[brasilAPI](https://brasilapi.com.br/docs)**, e para a estilização foi usado o framework **Tailwind CSS**.
 
 Documentação dos frameworks:
 * Node-RED: [Documentação](https://nodered.org/docs/)
